@@ -2,6 +2,8 @@
 # MEAN Stack Nitrous
 =======================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/sethbergman/mean-stack-nitrous.svg)](https://greenkeeper.io/)
+
 [![Dependency Status](https://david-dm.org/sethbergman/mean-stack-nitrous/status.svg?style=flat)](https://david-dm.org/sethbergman/mean-stack-nitrous) [![Build Status](https://travis-ci.org/sethbergman/mean-stack-nitrous.svg?branch=master)](https://travis-ci.org/sethbergman/mean-stack-nitrous)
 
 **Live Demo**: http://mean-stack-nitrous.npmstack.com
