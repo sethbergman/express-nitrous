@@ -1,11 +1,8 @@
 {
   "name": "mean-stack-nitrous",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "description": "A boilerplate for Node.js web applications",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sethbergman/mean-stack-nitrous.git"
-  },
+  "repository": "https://github.com/sethbergman/mean-stack-nitrous.git",
   "author": "Seth Bergman",
   "license": "MIT",
   "scripts": {
@@ -82,5 +79,6 @@
       "no-console": 0,
       "no-plusplus": 0
     }
-  }
+  },
+  "main": "index.js"
 }
