@@ -3,20 +3,19 @@ services:
   mongo:
     image: mongo:3.4
   node_modules:
-    build: 
+    build:
      context: .
      dockerfile: Dockerfile_nodemodules
   web:
     build: .
     ports:
-     - "3000:3000"
+     - "3000:80"
     environment:
-     - MONGODB_URI=mongodb://mongo:27017/test 
+     - MONGOLAB_URI=mongodb://nitro:nitrous@ds161039.mlab.com:61039/opcode
     links:
-     - mongo 
-    depends_on: 
-     - mongo 
+     - mongo
+    depends_on:
+     - mongo
     volumes:
      - .:/starter
      - /starter/node_modules
-     
