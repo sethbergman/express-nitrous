@@ -80,5 +80,5 @@
       "no-plusplus": 0
     }
   },
-  "main": "index.js"
+  "main": "app.js"
 }
