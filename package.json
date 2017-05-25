@@ -4,6 +4,7 @@
   "description": "A boilerplate for Node.js web applications",
   "repository": "https://github.com/sethbergman/mean-stack-nitrous.git",
   "author": "Seth Bergman",
+  "homepage": "https://mean-stack-nitrous.now.sh",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
