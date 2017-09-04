@@ -2,7 +2,7 @@
  * GET /
  * Home page.
  */
-exports.index = (req, res) => {
+const index = (req, res) => {
   res.render('home', {
     title: 'Home'
   });

@@ -12,9 +12,9 @@ const transporter = nodemailer.createTransport({
  * GET /contact
  * Contact form page.
  */
-exports.getContact = (req, res) => {
+export function getContact = (req, res) => {
   res.render('contact', {
-    title: 'Contact'
+    title: 'Contact Us!'
   });
 };
 
@@ -22,7 +22,7 @@ exports.getContact = (req, res) => {
  * POST /contact
  * Send a contact form via Nodemailer.
  */
-exports.postContact = (req, res) => {
+export function postContact = (req, res) => {
   req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('message', 'Message cannot be blank').notEmpty();
@@ -35,9 +35,9 @@ exports.postContact = (req, res) => {
   }
 
   const mailOptions = {
-    to: 'your@email.com',
+    to: 'support@operationcode.org',
     from: `${req.body.name} <${req.body.email}>`,
-    subject: 'Contact Form | Hackathon Starter',
+    subject: 'Mentor Request Form | Operation Code',
     text: req.body.message
   };
 

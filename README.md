@@ -393,7 +393,7 @@ Recommended Design Resources
 - [UIBox](http://www.uibox.in) - Curated HTML, CSS, JS, UI components.
 - [Bootstrap Zero](https://www.bootstrapzero.com) - Free Bootstrap templates themes.
 - [Google Bootstrap](http://todc.github.io/todc-bootstrap/) - Google-styled theme for Bootstrap.
-- [Font Awesome Icons](http://fortawesome.github.io/Font-Awesome/icons/) - It's already part of the Hackathon Starter, so use this page as a reference.
+- [Font Awesome Icons](http://fortawesome.github.io/Font-Awesome/icons/) - It's already part of the Operation Code, so use this page as a reference.
 - [Colors](http://clrs.cc) - A nicer color palette for the web.
 - [Creative Button Styles](http://tympanus.net/Development/CreativeButtons/) - awesome button styles.
 - [Creative Link Effects](http://tympanus.net/Development/CreativeLinkEffects/) - Beautiful link effects in CSS.
@@ -522,7 +522,7 @@ I hope it provides some guidance to you.
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
 When you download the ZIP file, it will come with *index.html*, *images*, *css* and *js* folders. So, how do you
-integrate it with Hackathon Starter? Hackathon Starter uses Bootstrap CSS framework, but these templates do not.
+integrate it with Operation Code? Operation Code uses Bootstrap CSS framework, but these templates do not.
 Trying to use both CSS files at the same time will likely result in undesired effects.
 
 **Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, home page, api browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for main app interface, and a custom template for a landing page.**
@@ -543,7 +543,7 @@ Whenever you see the code `res.render('account/login')` - that means it will sea
 Let's see how it looks. Create a new controller **escapeVelocity** inside `controllers/home.js`:
 
 ```js
-exports.escapeVelocity = (req, res) => {
+export function escapeVelocity = (req, res) => {
   res.render('escape-velocity', {
     title: 'Landing Page'
   });
@@ -562,9 +562,9 @@ Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
 will be embedded in your new `layout.pug` via `block content`. Use existing templates as a reference.
 
 This is a rather lengthy process, and templates you get from elsewhere,
-might have yet another grid system. That's why I chose *Bootstrap* for the Hackathon Starter.
+might have yet another grid system. That's why I chose *Bootstrap* for the Operation Code.
  Many people are already familiar with *Bootstrap*, plus it's easy to get started with it if you have never used *Bootstrap*.
- You can also buy many beautifully designed *Bootstrap* themes at [Themeforest](http://themeforest.net/), and use them as a drop-in replacement for Hackathon Starter. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
+ You can also buy many beautifully designed *Bootstrap* themes at [Themeforest](http://themeforest.net/), and use them as a drop-in replacement for Operation Code. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
 
 <hr>
 
@@ -662,7 +662,7 @@ It always goes from left to right. A user visits `/account` page. Then `isAuthen
 checks if you are authenticated:
 
 ```js
-exports.isAuthenticated = (req, res, next) => {
+export function isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -674,7 +674,7 @@ If you are authenticated, you let this visitor pass through your "door" by calli
 next middleware until it reaches the last argument, which is a callback function that typically renders a template on `GET` requests or redirects on `POST` requests. In this case, if you are authenticated, you will be redirected to *Account Management* page, otherwise you will be redirected to *Login* page.
 
 ```js
-exports.getAccount = (req, res) => {
+export function getAccount = (req, res) => {
   res.render('account/profile', {
     title: 'Account Management'
   });
@@ -738,7 +738,7 @@ module.exports = Book;
  */
 const Book = require('../models/Book.js');
 
-exports.getBooks = (req, res) => {
+export function getBooks = (req, res) => {
   Book.find((err, docs) => {
     res.render('books', { books: docs });
   });
@@ -791,7 +791,7 @@ parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), and etc.
 ### How do I use Socket.io?
 [Dan Stroot](https://github.com/dstroot) submitted an excellent [pull request](https://github.com/dstroot/hackathon-starter/commit/0a632def1ce8da446709d92812423d337c977d75) that adds a real-time dashboard with socket.io.
 And as  much as I'd like to add it to the project, I think it violates one of the main
-principles of the Hackathon Starter:
+principles of the Operation Code:
 > When I started this project, my primary focus was on simplicity and ease of use.
 > I also tried to make it as generic and reusable as possible to cover most use cases of
 > hackathon web apps, **without being too specific**.
@@ -816,7 +816,7 @@ I wouldn't even know I had to use port 8000.
 
 I am really glad that Heroku and OpenShift at least
 have a websockets support, because many other PaaS providers still do not support it.
-Due to the aforementioned issues with websockets, I cannot include socket.io as part of the Hackathon Starter. *For now...*
+Due to the aforementioned issues with websockets, I cannot include socket.io as part of the Operation Code. *For now...*
 If you need to use socket.io in your app, please continue reading.
 
 First you need to install socket.io:
@@ -955,7 +955,7 @@ import * as name from 'module-name';
 import { foo, bar } from 'module-name';
 ```
 
-To export functions, objects or primitives from a given file or module.
+To export function s, objects or primitives from a given file or module.
 
 ```js
 export { myFunction };
@@ -1251,7 +1251,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 ```
 
 - Finally, you can now push your code to OpenShift by running `git push -f openshift master`
- - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
+ - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Operation Code* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
 - And you are done!
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
@@ -1266,7 +1266,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - Select **Local Git repository** from the list, and then click the arrow
 - To enable Git publishing, Azure will ask you to create a user name and password
 - Once the Git repository is ready, you will be presented with a **GIT URL**
-- Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
+- Inside your *Operation Code* directory, run `git remote add azure [Azure Git URL]`
 - To push your changes simply run `git push azure master`
  - **Note:** *You will be prompted for the password you created earlier*
 - On **Deployments** tab of your Windows Azure Web App, you will see the deployment history

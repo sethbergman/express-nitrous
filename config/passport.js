@@ -453,8 +453,8 @@ passport.use('foursquare', new OAuth2Strategy({
 passport.use(new OpenIDStrategy({
   apiKey: process.env.STEAM_KEY,
   providerURL: 'http://steamcommunity.com/openid',
-  returnURL: 'http://localhost:3000/auth/steam/callback',
-  realm: 'http://localhost:3000/',
+  returnURL: '/auth/steam/callback',
+  realm: '/',
   stateless: true
 }, (identifier, done) => {
   const steamId = identifier.match(/\d+$/)[0];
@@ -509,7 +509,7 @@ passport.use('pinterest', new OAuth2Strategy({
 /**
  * Login Required middleware.
  */
-exports.isAuthenticated = (req, res, next) => {
+export function isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -519,7 +519,7 @@ exports.isAuthenticated = (req, res, next) => {
 /**
  * Authorization Required middleware.
  */
-exports.isAuthorized = (req, res, next) => {
+export function isAuthorized = (req, res, next) => {
   const provider = req.path.split('/').slice(-1)[0];
   const token = req.user.tokens.find(token => token.kind === provider);
   if (token) {

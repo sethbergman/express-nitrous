@@ -8,7 +8,7 @@ const User = require('../models/User');
  * GET /login
  * Login page.
  */
-exports.getLogin = (req, res) => {
+function getLogin (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
@@ -21,7 +21,7 @@ exports.getLogin = (req, res) => {
  * POST /login
  * Sign in using email and password.
  */
-exports.postLogin = (req, res, next) => {
+export function postLogin = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
@@ -51,7 +51,7 @@ exports.postLogin = (req, res, next) => {
  * GET /logout
  * Log out.
  */
-exports.logout = (req, res) => {
+export function logout = (req, res) => {
   req.logout();
   res.redirect('/');
 };
@@ -60,7 +60,7 @@ exports.logout = (req, res) => {
  * GET /signup
  * Signup page.
  */
-exports.getSignup = (req, res) => {
+export function getSignup = (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
@@ -73,7 +73,7 @@ exports.getSignup = (req, res) => {
  * POST /signup
  * Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+export function postSignup = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
@@ -113,7 +113,7 @@ exports.postSignup = (req, res, next) => {
  * GET /account
  * Profile page.
  */
-exports.getAccount = (req, res) => {
+export function getAccount = (req, res) => {
   res.render('account/profile', {
     title: 'Account Management'
   });
@@ -123,7 +123,7 @@ exports.getAccount = (req, res) => {
  * POST /account/profile
  * Update profile information.
  */
-exports.postUpdateProfile = (req, res, next) => {
+export function postUpdateProfile = (req, res, next) => {
   req.assert('email', 'Please enter a valid email address.').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
@@ -159,7 +159,7 @@ exports.postUpdateProfile = (req, res, next) => {
  * POST /account/password
  * Update current password.
  */
-exports.postUpdatePassword = (req, res, next) => {
+export function postUpdatePassword = (req, res, next) => {
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
@@ -185,7 +185,7 @@ exports.postUpdatePassword = (req, res, next) => {
  * POST /account/delete
  * Delete user account.
  */
-exports.postDeleteAccount = (req, res, next) => {
+export function postDeleteAccount = (req, res, next) => {
   User.remove({ _id: req.user.id }, (err) => {
     if (err) { return next(err); }
     req.logout();
@@ -198,7 +198,7 @@ exports.postDeleteAccount = (req, res, next) => {
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
  */
-exports.getOauthUnlink = (req, res, next) => {
+export function getOauthUnlink = (req, res, next) => {
   const provider = req.params.provider;
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
@@ -216,7 +216,7 @@ exports.getOauthUnlink = (req, res, next) => {
  * GET /reset/:token
  * Reset Password page.
  */
-exports.getReset = (req, res, next) => {
+export function getReset = (req, res, next) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -239,7 +239,7 @@ exports.getReset = (req, res, next) => {
  * POST /reset/:token
  * Process the reset password request.
  */
-exports.postReset = (req, res, next) => {
+export function postReset = (req, res, next) => {
   req.assert('password', 'Password must be at least 4 characters long.').len(4);
   req.assert('confirm', 'Passwords must match.').equals(req.body.password);
 
@@ -281,13 +281,13 @@ exports.postReset = (req, res, next) => {
     });
     const mailOptions = {
       to: user.email,
-      from: 'hackathon@starter.com',
-      subject: 'Your Hackathon Starter password has been changed',
+      from: 'user@startup.com',
+      subject: 'Your Operation Code password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
     return transporter.sendMail(mailOptions)
       .then(() => {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });    
+        req.flash('success', { msg: 'Success! Your password has been changed.' });
       });
   };
 
@@ -301,7 +301,7 @@ exports.postReset = (req, res, next) => {
  * GET /forgot
  * Forgot Password page.
  */
-exports.getForgot = (req, res) => {
+export function getForgot = (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -314,7 +314,7 @@ exports.getForgot = (req, res) => {
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
-exports.postForgot = (req, res, next) => {
+export function postForgot = (req, res, next) => {
   req.assert('email', 'Please enter a valid email address.').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
@@ -355,8 +355,8 @@ exports.postForgot = (req, res, next) => {
     });
     const mailOptions = {
       to: user.email,
-      from: 'hackathon@starter.com',
-      subject: 'Reset your password on Hackathon Starter',
+      from: 'user@startup.com',
+      subject: 'Reset your password on Operation Code',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
         http://${req.headers.host}/reset/${token}\n\n
