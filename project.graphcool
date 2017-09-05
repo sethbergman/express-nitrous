@@ -1,0 +1,47 @@
+# project: github
+# version: 9
+
+type User implements Node {
+  id: ID! @isUnique
+  githubUserId: String @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String @isUnique
+  password: String
+  isVerified: Boolean! @defaultValue(value: false)
+  secret: String @isUnique
+}
+
+type File implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type GithubRepo implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String @isUnique
+  updatedAt: DateTime!
+  avatar: String
+  changelog: String
+  description: String
+  homepageUrl: String
+  issues: Int
+  lastCommit: Json
+  lastRelease: Json
+  license: String
+  owner: String
+  primaryLanguage: Json
+  pullRequests: Int
+  readme: String
+  repoUrl: String! @isUnique
+  stars: Int
+  isVerified: Boolean! @defaultValue(value: false)
+  secret: String @isUnique
+}

@@ -17,7 +17,7 @@ tmp
 public/css/main.css
 
 # API keys and secrets
-.env
+!.env
 
 # Dependency directory
 node_modules
@@ -30,3 +30,15 @@ bower_components
 # OS metadata
 .DS_Store
 Thumbs.db
+*.swp
+*~
+*.iml
+.*.haste_cache.*
+.DS_Store
+.idea
+npm-debug.log
+
+dist
+node_modules
+coverage
+venv

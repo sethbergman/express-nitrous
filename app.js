@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -19,6 +20,9 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const restify = require('restify');
+const graphqlHTTP = require('express-graphql');
+
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -33,6 +37,7 @@ dotenv.load({ path: '.env' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
+const githubController = require('./controllers/github');
 const contactController = require('./controllers/contact');
 
 /**
@@ -48,20 +53,30 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
+app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
+  schema: userSchema,
+  rootValue: await someFunctionToGetRootValue(request),
+  graphiql: true
+})));
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
+  // process.exit();
 });
 
+app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
+  schema: MyGraphQLSchema,
+  rootValue: await someFunctionToGetRootValue(request),
+  graphiql: true
+})));
 /**
  * Express configuration.
  */
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'pug', 'html');
 app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
@@ -72,6 +87,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
+
 app.use(session({
   resave: true,
   saveUninitialized: true,
@@ -83,7 +99,31 @@ app.use(session({
   })
 }));
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({
+  url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
+  autoReconnect: true,
+  clear_interval: 3600
+})
+}));
+
+
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
+
+app.use('/graphql', graphqlHTTP(request => {
+  const startTime = Date.now();
+  return {
+    schema: MyGraphQLSchema,
+    graphiql: true,
+    extensions({ document, variables, operationName, result }) {
+      return { runTime: Date.now() - startTime };
+    }
+  };
+}));
+
 app.use(flash());
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
@@ -219,7 +259,13 @@ app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRed
 /**
  * Error Handler.
  */
-app.use(errorHandler());
+const formatError = ((error) => ({
+   message: error.message,
+   locations: error.locations,
+   stack: error.stack,
+   path: error.path
+ }));
+
 
 /**
  * Start Express server.
