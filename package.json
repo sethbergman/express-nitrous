@@ -9,7 +9,9 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha --reporter spec",
-    "postinstall": "npm rebuild node-sass"
+    "postinstall": "npm rebuild node-sass",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
@@ -57,7 +59,8 @@
     "tumblr.js": "^1.1.1",
     "twilio": "^3.3.1-edge",
     "twit": "^2.2.5",
-    "validator": "^7.0.0"
+    "validator": "^7.0.0",
+    "snyk": "^1.52.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -81,5 +84,6 @@
       "no-plusplus": 0
     }
   },
-  "main": "app.js"
+  "main": "app.js",
+  "snyk": true
 }
